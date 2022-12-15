@@ -1,7 +1,7 @@
 package Utils;
 
 public class PseudoRandomNumberGenerator {
-  private final MessageManipulation messageManipulation = new MessageManipulation();
+  final MessageManipulation messageManipulation = new MessageManipulation();
 
   private static int getSeed(StringBuilder binary) {
     String[] binaryArrays = new String[binary.length() / 8];

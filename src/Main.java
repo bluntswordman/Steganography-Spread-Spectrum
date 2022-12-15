@@ -2,7 +2,7 @@ import Controllers.SteganographyController;
 import Helpers.Path;
 
 public class Main {
-  private final static String KEY = "UIGM";
+  static final String KEY = "UIGM";
 
   public static void main(String[] args) {
     SteganographyController steganographyController = new SteganographyController();
