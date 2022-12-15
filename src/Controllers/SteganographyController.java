@@ -13,11 +13,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SteganographyController {
-  private static final String delimiter = "#";
-  private final FileManagement fileManagement = new FileManagement();
-  private final MessageManipulation messageManipulation = new MessageManipulation();
-  private final StringManipulation stringManipulation = new StringManipulation();
-  private final BinaryManipulation binaryManipulation = new BinaryManipulation();
+  final FileManagement fileManagement = new FileManagement();
+  final MessageManipulation messageManipulation = new MessageManipulation();
+  final StringManipulation stringManipulation = new StringManipulation();
+  final BinaryManipulation binaryManipulation = new BinaryManipulation();
 
   private int setLeastSignificantBit(int rgb, int bit) {
     int newRGB = rgb;
@@ -29,14 +28,16 @@ public class SteganographyController {
     return newRGB;
   }
 
-  public void embedding(String messagePath, String imagePath, String stegoPath, String key) {
-    StringBuilder binaryDelimiter = messageManipulation.convertStringToBinary(delimiter);
+  final StringBuilder getDelimiter() {
+    return messageManipulation.convertStringToBinary("#");
+  }
 
+  public void embedding(String messagePath, String imagePath, String stegoPath, String key) {
     String message = fileManagement.getFileMessage(messagePath);
     StringBuilder binaryMessage = messageManipulation.convertStringToBinary(message);
     StringBuilder messageSpreading = stringManipulation.spreadingBits(binaryMessage);
     StringBuilder result = binaryManipulation.modulasi(messageSpreading, key);
-    result.append(binaryDelimiter);
+    result.append(getDelimiter());
     int[] bits = stringManipulation.convertBinaryToBits(result);
 
     File file = new File(stegoPath);
@@ -96,10 +97,8 @@ public class SteganographyController {
       bits[bitIndex++] = blue & 1;
     }
 
-    StringBuilder binaryDelimiter = messageManipulation.convertStringToBinary(delimiter);
-
     StringBuilder result = stringManipulation.convertBitsToBinary(bits);
-    int index = result.indexOf(binaryDelimiter.toString());
+    int index = result.indexOf(getDelimiter().toString());
     StringBuilder messageBinary = new StringBuilder(result.substring(0, index));
     StringBuilder messageDeModulasi = binaryManipulation.demodulasi(messageBinary, key);
     StringBuilder messageDeSpreading = stringManipulation.deSpreadingBits(messageDeModulasi);
