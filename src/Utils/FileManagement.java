@@ -15,6 +15,7 @@ public class FileManagement {
     } catch (IOException e) {
       System.err.println("Maaf, gambar tidak ditemukan");
     }
+
     return image;
   }
 
@@ -34,6 +35,7 @@ public class FileManagement {
     } catch (FileNotFoundException e) {
       System.err.println("Maaf, file pesan tidak ditemukan");
     }
+
     return message.toString();
   }
 }
