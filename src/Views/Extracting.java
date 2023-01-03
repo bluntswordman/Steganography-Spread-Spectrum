@@ -1,25 +1,35 @@
 package Views;
 
 import Controllers.SteganographyController;
+import Helpers.GenerateId;
 import Helpers.Path;
+import Utils.FileManagement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.nio.file.Files;
 
 public class Extracting {
   private JPanel panelExtractingMenu;
   private JButton buttonChooseImage;
   private JTextField fieldKey;
-  private JButton buttonSaveMessage;
+  private JButton buttonProcess;
   private JButton buttonBackHome;
   private JPanel panelShowStegoImage;
+  private JTextArea areaResultMessage;
+  private JButton buttonSaveMessage;
   private String stegoImagePath;
+  private String tempMessagePath;
 
   public Extracting() {
     panelExtractingMenu.setPreferredSize(new Dimension(1000, 500));
     panelExtractingMenu.setBackground(Color.decode("#0f172a"));
     panelShowStegoImage.setBackground(Color.decode("#cbd5e1"));
+    areaResultMessage.setBackground(Color.decode("#cbd5e1"));
+    areaResultMessage.setEditable(false);
 
     buttonBackHome.addActionListener(e -> {
       Home home = new Home();
@@ -55,17 +65,58 @@ public class Extracting {
       }
     });
 
-    buttonSaveMessage.addActionListener(e -> {
+    buttonProcess.addActionListener(e -> {
+      GenerateId generateId = new GenerateId();
       String key = fieldKey.getText();
-      String messagePath = Path.RESULT_MESSAGE_PATH.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + ".txt";
+      String messagePath = Path.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".txt";
 
       SteganographyController steganographyController = new SteganographyController();
+      FileManagement fileManagement = new FileManagement();
 
       try {
         steganographyController.extracting(stegoImagePath, messagePath, key);
+        tempMessagePath = messagePath;
+        String message = fileManagement.getFileMessage(messagePath);
+        areaResultMessage.setText(message);
         JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak");
       } catch (Exception exception) {
         JOptionPane.showMessageDialog(null, exception.getMessage());
+      }
+    });
+
+    buttonSaveMessage.addActionListener(e -> {
+      if (tempMessagePath != null) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setDialogTitle("Save Message");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+          @Override
+          public boolean accept(File f) {
+            return f.getName().toLowerCase().endsWith(".txt") || f.isDirectory();
+          }
+
+          @Override
+          public String getDescription() {
+            return "Text Files (*.txt)";
+          }
+        });
+        fileChooser.showSaveDialog(null);
+        if (fileChooser.getSelectedFile() != null) {
+          String messagePath = fileChooser.getSelectedFile().getAbsolutePath();
+          if (!messagePath.endsWith(".txt")) {
+            messagePath += ".txt";
+          }
+          try {
+            Files.copy(new File(tempMessagePath).toPath(), new File(messagePath).toPath());
+            JOptionPane.showMessageDialog(null, "Pesan berhasil disimpan");
+          } catch (Exception exception) {
+            JOptionPane.showMessageDialog(null, exception.getMessage());
+          }
+        }
+      } else {
+        JOptionPane.showMessageDialog(null, "Pesan belum diekstrak");
       }
     });
   }
@@ -77,6 +128,28 @@ public class Extracting {
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        super.windowClosing(e);
+        File folderImage = new File(Path.TEMP_STEGO_IMAGE.getPath());
+        File folderMessage = new File(Path.TEMP_MESSAGE.getPath());
+        File[] filesImage = folderImage.listFiles();
+        File[] filesMessage = folderMessage.listFiles();
+        assert filesImage != null;
+        assert filesMessage != null;
+        try {
+          for (File file : filesImage) {
+            Files.delete(file.toPath());
+          }
+          for (File file : filesMessage) {
+            Files.delete(file.toPath());
+          }
+        } catch (Exception ioException) {
+          ioException.printStackTrace();
+        }
+      }
+    });
   }
 
   private void createUIComponents() {
@@ -126,7 +199,7 @@ public class Extracting {
       }
     };
 
-    buttonSaveMessage = new JButton() {
+    buttonProcess = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
@@ -145,14 +218,14 @@ public class Extracting {
         g.setColor(Color.decode("#ffffff"));
         g.setFont(new Font("Inter", Font.BOLD, 16));
         FontMetrics metrics = g.getFontMetrics(g.getFont());
-        int x = (getWidth() - metrics.stringWidth("Proses & Simpan Pesan")) / 2;
+        int x = (getWidth() - metrics.stringWidth("Proses")) / 2;
         int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
-        g.drawString("Proses & Simpan Pesan", x, y);
+        g.drawString("Proses", x, y);
       }
 
       @Override
       public Dimension getPreferredSize() {
-        return new Dimension(190, 30);
+        return new Dimension(130, 30);
       }
     };
 
@@ -186,7 +259,45 @@ public class Extracting {
       }
     };
 
+    buttonSaveMessage = new JButton() {
+      @Override
+      public void paintBorder(Graphics g) {
+        g.setColor(Color.decode("#0369a1"));
+        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+      }
+
+      @Override
+      public void paintComponent(Graphics g) {
+        g.setColor(Color.decode("#4338ca"));
+        g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+      }
+
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.decode("#ffffff"));
+        g.setFont(new Font("Inter", Font.BOLD, 16));
+        FontMetrics metrics = g.getFontMetrics(g.getFont());
+        int x = (getWidth() - metrics.stringWidth("Simpan Pesan")) / 2;
+        int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
+        g.drawString("Simpan Pesan", x, y);
+      }
+
+      @Override
+      public Dimension getPreferredSize() {
+        return new Dimension(130, 30);
+      }
+    };
+
     fieldKey = new JTextField() {
+      @Override
+      public void paintBorder(Graphics g) {
+        g.setColor(Color.decode("#0369a1"));
+        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+      }
+    };
+
+    areaResultMessage = new JTextArea() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
