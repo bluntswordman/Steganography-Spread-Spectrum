@@ -1,12 +1,14 @@
 package Helpers;
 
 public enum Path {
-//  for IMAGE_PATH => fill in with the location of your image file storage
-//  for MESSAGE_PATH => fill in with the location of your message file storage
-//  example: C:\\Users\\User\\Desktop\\Java\\ChatApp\\src\\Images\\
-//  example: C:\\Users\\User\\Desktop\\Java\\ChatApp\\src\\Messages\\
-  IMAGE_PATH(""),
-  MESSAGE_PATH("");
+  COVER_IMAGE_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Images\\Cover-Image\\"),
+  STEGO_IMAGE_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Images\\Stego-Image\\"),
+  ORIGINAL_MESSAGE_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Messages\\Text-Original\\"),
+  RESULT_MESSAGE_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Messages\\Hasil-Extracting\\"),
+  STEGO_IMAGE_MANIPULATION_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Images\\Hasil-Manipulasi\\Pengubahan-Kontras-Warna\\"),
+  TEMP_STEGO_IMAGE("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Temp\\Stego\\"),
+  TEMP_MESSAGE("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Temp\\Message\\"),
+  RESULT_MESSAGE_MANIPULATION_PATH("D:\\Sobat-Pengkodingan\\skripsi-code\\real-app\\src\\Assets\\Messages\\Hasil Manipulasi\\Pengubahan-Kontras-Warna\\");
 
   private final String path;
 
