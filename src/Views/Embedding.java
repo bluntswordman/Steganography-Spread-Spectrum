@@ -31,6 +31,7 @@ public class Embedding {
     EmbeddingMenu.setBackground(Color.decode("#0f172a"));
     showCoverImage.setBackground(Color.decode("#cbd5e1"));
     showStegoImage.setBackground(Color.decode("#cbd5e1"));
+    fieldPathFileMessage.setEditable(false);
 
     buttonBackHome.addActionListener(e -> {
       Home home = new Home();
@@ -68,6 +69,7 @@ public class Embedding {
 
     buttonChooseFileMessage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
+      fileChooser.setCurrentDirectory(new java.io.File("."));
       fileChooser.setDialogTitle("Pilih Pesan");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -113,21 +115,37 @@ public class Embedding {
     });
 
     buttonSaveStegoImage.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setDialogTitle("Simpan Gambar");
-      fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      fileChooser.setAcceptAllFileFilterUsed(false);
-      fileChooser.showOpenDialog(null);
-      if (fileChooser.getSelectedFile() != null) {
-        String path = fileChooser.getSelectedFile().getAbsolutePath();
-        File source = new File(tempStegoImagePath);
-        File dest = new File(path + "\\" + source.getName());
-        try {
-          Files.copy(source.toPath(), dest.toPath());
-          JOptionPane.showMessageDialog(null, "Gambar berhasil disimpan");
-        } catch (IOException ioException) {
-          ioException.printStackTrace();
+      if (tempStegoImagePath != null) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setDialogTitle("Save Message");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+          @Override
+          public boolean accept(File f) {
+            return f.getName().toLowerCase().endsWith(".png") || f.isDirectory();
+          }
+          @Override
+          public String getDescription() {
+            return "PNG Images";
+          }
+        });
+        fileChooser.showSaveDialog(null);
+        if (fileChooser.getSelectedFile() != null) {
+          String path = fileChooser.getSelectedFile().getAbsolutePath();
+          if (!path.endsWith(".png")) {
+            path += ".png";
+          }
+          try {
+            Files.copy(new File(tempStegoImagePath).toPath(), new File(path).toPath());
+            JOptionPane.showMessageDialog(null, "Gambar berhasil disimpan");
+          } catch (IOException ioException) {
+            ioException.printStackTrace();
+          }
         }
+      } else {
+        JOptionPane.showMessageDialog(null, "Gambar Stego belum di proses");
       }
     });
 
@@ -140,16 +158,25 @@ public class Embedding {
     frame.setVisible(true);
     frame.setLocationRelativeTo(null);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     frame.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
         super.windowClosing(e);
-        File folder = new File(Path.TEMP_STEGO_IMAGE.getPath());
-        File[] files = folder.listFiles();
-        assert files != null;
-        for (File file : files) {
-          file.delete();
+        File folderImage = new File(Path.TEMP_STEGO_IMAGE.getPath());
+        File folderMessage = new File(Path.TEMP_MESSAGE.getPath());
+        File[] filesImage = folderImage.listFiles();
+        File[] filesMessage = folderMessage.listFiles();
+        assert filesImage != null;
+        assert filesMessage != null;
+        try {
+          for (File file : filesImage) {
+            Files.delete(file.toPath());
+          }
+          for (File file : filesMessage) {
+            Files.delete(file.toPath());
+          }
+        } catch (Exception ioException) {
+          ioException.printStackTrace();
         }
       }
     });
@@ -163,6 +190,7 @@ public class Embedding {
         return new Dimension(300, 300);
       }
     };
+
     showStegoImage = new JPanel() {
       @Override
       protected void paintComponent(Graphics g) {
@@ -171,25 +199,23 @@ public class Embedding {
         int y = (getHeight() - 300) / 2;
         g.drawImage(new ImageIcon("").getImage(), x, y, 400, 300, null);
       }
-
       @Override
       public Dimension getPreferredSize() {
         return new Dimension(300, 300);
       }
     };
+
     buttonChooseImage = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
         g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paintComponent(Graphics g) {
         g.setColor(Color.decode("#4338ca"));
         g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paint(Graphics g) {
         super.paint(g);
@@ -200,25 +226,23 @@ public class Embedding {
         int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString("Pilih Gambar", x, y);
       }
-
       @Override
       public Dimension getPreferredSize() {
         return new Dimension(195, 30);
       }
     };
+
     buttonSaveStegoImage = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
         g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paintComponent(Graphics g) {
         g.setColor(Color.decode("#4338ca"));
         g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paint(Graphics g) {
         super.paint(g);
@@ -229,25 +253,23 @@ public class Embedding {
         int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString("Simpan Gambar", x, y);
       }
-
       @Override
       public Dimension getPreferredSize() {
         return new Dimension(160, 30);
       }
     };
+
     buttonBackHome = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
         g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paintComponent(Graphics g) {
         g.setColor(Color.decode("#4338ca"));
         g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paint(Graphics g) {
         super.paint(g);
@@ -259,19 +281,18 @@ public class Embedding {
         g.drawString("Kembali", x, y);
       }
     };
+
     buttonChooseFileMessage = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
         g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paintComponent(Graphics g) {
         g.setColor(Color.decode("#4338ca"));
         g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paint(Graphics g) {
         super.paint(g);
@@ -282,25 +303,23 @@ public class Embedding {
         int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString("Pilih Pesan", x, y);
       }
-
       @Override
       public Dimension getPreferredSize() {
         return new Dimension(130, 30);
       }
     };
+
     buttonProcess = new JButton() {
       @Override
       public void paintBorder(Graphics g) {
         g.setColor(Color.decode("#0369a1"));
         g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paintComponent(Graphics g) {
         g.setColor(Color.decode("#4338ca"));
         g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
       }
-
       @Override
       public void paint(Graphics g) {
         super.paint(g);
@@ -311,7 +330,6 @@ public class Embedding {
         int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString("Proses", x, y);
       }
-
       @Override
       public Dimension getPreferredSize() {
         return new Dimension(130, 30);
