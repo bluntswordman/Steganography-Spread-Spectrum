@@ -40,7 +40,6 @@ public class SteganographyController {
     result.append(getDelimiter());
     int[] bits = stringManipulation.convertBinaryToBits(result);
 
-    File file = new File(stegoPath);
     BufferedImage image = fileManagement.getFileImage(imagePath);
     BufferedImage stegoImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
     int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
@@ -72,7 +71,7 @@ public class SteganographyController {
     }
 
     stegoImage.setRGB(0, 0, image.getWidth(), image.getHeight(), stegoPixels, 0, image.getWidth());
-
+    File file = new File(stegoPath);
     try {
       ImageIO.write(stegoImage, "png", file);
       System.out.println("Embedding Success");
