@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Views.EmbeddingForm">
+  <grid id="27dc6" binding="panelEmbedding" layout-manager="GridLayoutManager" row-count="14" column-count="11" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+    <margin top="10" left="25" bottom="10" right="25"/>
+    <constraints>
+      <xy x="20" y="20" width="1000" height="500"/>
+    </constraints>
+    <properties>
+      <background color="-15788246"/>
+      <doubleBuffered value="false"/>
+      <focusable value="false"/>
+      <font name="Inter" size="14" style="0"/>
+      <foreground color="-1"/>
+      <maximumSize width="1000" height="500"/>
+      <minimumSize width="1000" height="500"/>
+      <preferredSize width="1000" height="500"/>
+    </properties>
+    <border type="none" title=""/>
+    <children>
+      <component id="ccfc" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <text value="Cover Objek"/>
+        </properties>
+      </component>
+      <grid id="4eef6" binding="panelCoverImage" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="6" column="1" row-span="2" col-span="5" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="true">
+            <preferred-size width="300" height="300"/>
+          </grid>
+        </constraints>
+        <properties>
+          <doubleBuffered value="false"/>
+          <focusable value="false"/>
+          <opaque value="true"/>
+          <requestFocusEnabled value="false"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <component id="9f4b2" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <text value="Hasil Embedding"/>
+        </properties>
+      </component>
+      <grid id="bd447" binding="panelStegoImage" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="6" column="8" row-span="2" col-span="2" vsize-policy="3" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="true">
+            <preferred-size width="300" height="300"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <component id="3229b" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <text value="File Pesan"/>
+        </properties>
+      </component>
+      <component id="7a751" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <text value="Kunci"/>
+        </properties>
+      </component>
+      <component id="2c60" class="javax.swing.JButton" binding="buttonSaveStegoImage">
+        <constraints>
+          <grid row="4" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="100" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1419252"/>
+          <borderPainted value="false"/>
+          <defaultCapable value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <label value="Simpan Gambar"/>
+          <requestFocusEnabled value="false"/>
+          <rolloverEnabled value="false"/>
+          <text value="Simpan Gambar"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+      </component>
+      <component id="b93d5" class="javax.swing.JButton" binding="buttonChooseCoverImage">
+        <constraints>
+          <grid row="4" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="100" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <alignmentY value="0.0"/>
+          <background color="-1419252"/>
+          <borderPainted value="false"/>
+          <defaultCapable value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <requestFocusEnabled value="false"/>
+          <rolloverEnabled value="false"/>
+          <text value="Pilih Cover Image"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+      </component>
+      <component id="1d23b" class="javax.swing.JButton" binding="buttonChooseFileMessage">
+        <constraints>
+          <grid row="9" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="75" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1419252"/>
+          <borderPainted value="false"/>
+          <defaultCapable value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <label value="Pilih File"/>
+          <text value="Pilih File"/>
+        </properties>
+      </component>
+      <component id="48b89" class="javax.swing.JButton" binding="buttonProcess">
+        <constraints>
+          <grid row="11" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="75" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1419252"/>
+          <borderPainted value="false"/>
+          <defaultCapable value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <requestFocusEnabled value="false"/>
+          <rolloverEnabled value="false"/>
+          <text value="Proses"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+      </component>
+      <component id="add4e" class="javax.swing.JTextField" binding="fieldMessagePath">
+        <constraints>
+          <grid row="9" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="100" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <editable value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="12" style="1"/>
+          <requestFocusEnabled value="false"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+      </component>
+      <component id="f88ec" class="javax.swing.JTextField" binding="fieldKey">
+        <constraints>
+          <grid row="11" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="100" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <font name="Inter" size="12" style="1"/>
+        </properties>
+      </component>
+      <hspacer id="7b722">
+        <constraints>
+          <grid row="6" column="7" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="ddc5d">
+        <constraints>
+          <grid row="6" column="6" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <vspacer id="c8b67">
+        <constraints>
+          <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="da0a">
+        <constraints>
+          <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="847cf">
+        <constraints>
+          <grid row="13" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <hspacer id="48b26">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="5907">
+        <constraints>
+          <grid row="6" column="10" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <vspacer id="7b7de">
+        <constraints>
+          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="e4f5a">
+        <constraints>
+          <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="9c0d6">
+        <constraints>
+          <grid row="10" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="1e54b">
+        <constraints>
+          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="1dbdf" class="javax.swing.JButton" binding="buttonBackHome">
+        <constraints>
+          <grid row="1" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="75" height="25"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1419252"/>
+          <borderPainted value="false"/>
+          <defaultCapable value="false"/>
+          <focusPainted value="false"/>
+          <focusable value="false"/>
+          <font name="Inter" size="14" style="1"/>
+          <foreground color="-1"/>
+          <label value="Kembali"/>
+          <requestFocusEnabled value="false"/>
+          <rolloverEnabled value="false"/>
+          <text value="Kembali"/>
+          <verifyInputWhenFocusTarget value="false"/>
+        </properties>
+      </component>
+      <vspacer id="692e7">
+        <constraints>
+          <grid row="3" column="9" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="d2eab">
+        <constraints>
+          <grid row="2" column="9" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+    </children>
+  </grid>
+</form>

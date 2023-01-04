@@ -1,8 +1,8 @@
-import Views.Home;
+import Views.Base;
 
 public class Main {
   public static void main(String[] args) {
-    Home home = new Home();
-    home.show();
+    Base base = new Base();
+    base.show();
   }
 }
