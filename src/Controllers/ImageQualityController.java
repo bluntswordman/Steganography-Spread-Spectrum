@@ -1,15 +1,14 @@
-package Utils;
-
-import Helpers.Path;
+package Controllers;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
-public class ImageQuality {
-  public static int[][][] getRGBMatrix(String path) throws IOException {
+public class ImageQualityController {
+  private static int[][][] getRGBMatrix(String path) throws IOException {
     BufferedImage image = ImageIO.read(new File(path));
     int[][][] rgbMatrix = new int[image.getWidth()][image.getHeight()][3];
     for (int i = 0; i < image.getWidth(); i++) {
@@ -26,7 +25,7 @@ public class ImageQuality {
     return rgbMatrix;
   }
 
-  public static double countMSE(int[][][] rgbMatrix1, int[][][] rgbMatrix2) {
+  private static double countMSE(int[][][] rgbMatrix1, int[][][] rgbMatrix2) {
     double mse = 0;
     for (int i = 0; i < rgbMatrix1.length; i++) {
       for (int j = 0; j < rgbMatrix1[0].length; j++) {
@@ -39,20 +38,21 @@ public class ImageQuality {
     return mse;
   }
 
-  public static double countPSNR(double mse) {
+  private static double countPSNR(double mse) {
     return 10 * Math.log10(Math.pow(255, 2) / mse);
   }
 
-  public static void main(String[] args) throws IOException {
-    String pathCover = Path.COVER_IMAGE_PATH.getPath() + "windows-xp.png";
-    String pathStego = Path.STEGO_IMAGE_PATH.getPath() + "stego-windows-xp.png";
-
+  public HashMap<String, Double> generate(String pathCover, String pathStego) throws IOException {
     int[][][] rgbMatrixCover = getRGBMatrix(pathCover);
     int[][][] rgbMatrixStego = getRGBMatrix(pathStego);
 
     double mse = countMSE(rgbMatrixCover, rgbMatrixStego);
-    System.out.println("MSE : " + String.format("%.5f", mse));
     double psnr = countPSNR(mse);
-    System.out.println("PSNR : " + String.format("%.5f", psnr) + " dB");
+
+    HashMap<String, Double> imageQuality = new HashMap<>();
+    imageQuality.put("MSE", Double.valueOf(String.format("%.5f", mse)));
+    imageQuality.put("PSNR", Double.valueOf(String.format("%.5f", psnr)));
+
+    return imageQuality;
   }
 }
