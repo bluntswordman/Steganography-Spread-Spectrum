@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SteganographyController {
   final FileManagement fileManagement = new FileManagement();
@@ -74,7 +75,6 @@ public class SteganographyController {
     File file = new File(stegoPath);
     try {
       ImageIO.write(stegoImage, "png", file);
-      System.out.println("Embedding Success");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -97,9 +97,18 @@ public class SteganographyController {
     }
 
     StringBuilder result = stringManipulation.convertBitsToBinary(bits);
-    int index = result.indexOf(getDelimiter().toString());
-    StringBuilder messageBinary = new StringBuilder(result.substring(0, index));
-    StringBuilder messageDeModulasi = binaryManipulation.demodulasi(messageBinary, key);
+    ArrayList<String> arrayResult = new ArrayList<String>();
+    for (int i = 0; i < result.length(); i += 8) {
+      arrayResult.add(result.substring(i, i + 8));
+    }
+    StringBuilder resultBinary = new StringBuilder();
+    for (String s : arrayResult) {
+      if (s.equals(getDelimiter().toString())) {
+        break;
+      }
+      resultBinary.append(s);
+    }
+    StringBuilder messageDeModulasi = binaryManipulation.demodulasi(resultBinary, key);
     StringBuilder messageDeSpreading = stringManipulation.deSpreadingBits(messageDeModulasi);
     String message = String.valueOf(messageManipulation.convertBinaryToString(messageDeSpreading));
 
@@ -109,7 +118,6 @@ public class SteganographyController {
       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
       bufferedWriter.write(message);
       bufferedWriter.close();
-      System.out.println("Extracting Success");
     } catch (IOException e) {
       e.printStackTrace();
     }

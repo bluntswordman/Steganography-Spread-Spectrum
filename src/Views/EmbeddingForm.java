@@ -37,7 +37,7 @@ public class EmbeddingForm {
 
     buttonChooseCoverImage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("."));
+      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
       fileChooser.setDialogTitle("Pilih Gambar");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -64,7 +64,7 @@ public class EmbeddingForm {
 
     buttonChooseFileMessage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("."));
+      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
       fileChooser.setDialogTitle("Pilih Pesan");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -112,7 +112,7 @@ public class EmbeddingForm {
     buttonSaveStegoImage.addActionListener(e -> {
       if (tempStegoImagePath != null) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setCurrentDirectory(new java.io.File("../../../"));
         fileChooser.setDialogTitle("Save Message");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
