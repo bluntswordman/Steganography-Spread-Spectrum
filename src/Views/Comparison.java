@@ -26,7 +26,7 @@ public class Comparison {
 
     buttonChooseCover.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("."));
+      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
       fileChooser.setDialogTitle("Choose Cover Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -53,7 +53,7 @@ public class Comparison {
 
     buttonChooseStego.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("."));
+      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
       fileChooser.setDialogTitle("Choose Stego Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);

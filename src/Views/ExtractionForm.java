@@ -34,7 +34,7 @@ public class ExtractionForm {
 
     buttonChooseImage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("."));
+      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
       fileChooser.setDialogTitle("Choose Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -81,7 +81,7 @@ public class ExtractionForm {
     buttonSaveMessage.addActionListener(e -> {
       if (tempMessagePath != null) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new java.io.File("."));
+        fileChooser.setCurrentDirectory(new java.io.File("../../../"));
         fileChooser.setDialogTitle("Save Message");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
