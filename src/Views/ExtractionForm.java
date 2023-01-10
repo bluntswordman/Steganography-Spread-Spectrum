@@ -21,6 +21,8 @@ public class ExtractionForm {
   private JButton buttonSaveMessage;
   private JTextField fieldKey;
   private JTextArea areaResultMessage;
+  private JButton buttonReset;
+  private JLabel labelTime;
   private String stegoImagePath;
   private String tempMessagePath;
 
@@ -34,7 +36,7 @@ public class ExtractionForm {
 
     buttonChooseImage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+      fileChooser.setCurrentDirectory(new java.io.File("../../"));
       fileChooser.setDialogTitle("Choose Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -60,28 +62,36 @@ public class ExtractionForm {
     });
 
     buttonProcess.addActionListener(e -> {
-      GenerateId generateId = new GenerateId();
-      String key = fieldKey.getText();
-      String messagePath = Path.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".txt";
-
       SteganographyController steganographyController = new SteganographyController();
       FileManagement fileManagement = new FileManagement();
-
+      GenerateId generateId = new GenerateId();
+      String key = fieldKey.getText();
+      long startTime = System.currentTimeMillis();
       try {
+        String messagePath = Path.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".txt";
         steganographyController.extracting(stegoImagePath, messagePath, key);
+        long endTime = System.currentTimeMillis();
+        double duration = (endTime - startTime) / 1000.0;
         tempMessagePath = messagePath;
         String message = fileManagement.getFileMessage(messagePath);
         areaResultMessage.setText(message);
+        labelTime.setText("Waktu Embedding: " + duration + " detik");
         JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak");
       } catch (Exception exception) {
-        JOptionPane.showMessageDialog(null, exception.getMessage());
+        if (stegoImagePath == null) {
+          JOptionPane.showMessageDialog(null, "Pilih gambar stego terlebih dahulu", "Gagal", JOptionPane.ERROR_MESSAGE);
+        } else if (key.isEmpty()) {
+          JOptionPane.showMessageDialog(null, "Masukkan kunci terlebih dahulu", "Gagal", JOptionPane.ERROR_MESSAGE);
+        } else {
+          JOptionPane.showMessageDialog(null, "Extracting gagal dilakukan", "Gagal", JOptionPane.ERROR_MESSAGE);
+        }
       }
     });
 
     buttonSaveMessage.addActionListener(e -> {
       if (tempMessagePath != null) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+        fileChooser.setCurrentDirectory(new java.io.File("../../"));
         fileChooser.setDialogTitle("Save Message");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -112,6 +122,17 @@ public class ExtractionForm {
       } else {
         JOptionPane.showMessageDialog(null, "Pesan belum diekstrak");
       }
+    });
+
+    buttonReset.addActionListener(e -> {
+      stegoImagePath = null;
+      tempMessagePath = null;
+      fieldKey.setText("");
+      areaResultMessage.setText("");
+      panelStegoImage.removeAll();
+      panelStegoImage.revalidate();
+      panelStegoImage.repaint();
+      labelTime.setText("Waktu Embedding: -");
     });
   }
 

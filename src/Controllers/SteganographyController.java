@@ -33,7 +33,7 @@ public class SteganographyController {
     return messageManipulation.convertStringToBinary("#");
   }
 
-  public void embedding(String messagePath, String imagePath, String stegoPath, String key) {
+  public boolean embedding(String messagePath, String imagePath, String stegoPath, String key) {
     String message = fileManagement.getFileMessage(messagePath);
     StringBuilder binaryMessage = messageManipulation.convertStringToBinary(message);
     StringBuilder messageSpreading = stringManipulation.spreadingBits(binaryMessage);
@@ -75,8 +75,10 @@ public class SteganographyController {
     File file = new File(stegoPath);
     try {
       ImageIO.write(stegoImage, "png", file);
+      return true;
     } catch (IOException e) {
       e.printStackTrace();
+      return false;
     }
   }
 
