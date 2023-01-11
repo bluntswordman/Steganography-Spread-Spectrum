@@ -23,6 +23,8 @@ public class EmbeddingForm {
   private JButton buttonChooseFileMessage;
   private JTextField fieldKey;
   private JTextField fieldMessagePath;
+  private JLabel labelTime;
+  private JButton buttonReset;
   private String messagePath;
   private String coverImagePath;
   private String tempStegoImagePath;
@@ -37,7 +39,7 @@ public class EmbeddingForm {
 
     buttonChooseCoverImage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+      fileChooser.setCurrentDirectory(new java.io.File("../../"));
       fileChooser.setDialogTitle("Pilih Gambar");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -64,7 +66,7 @@ public class EmbeddingForm {
 
     buttonChooseFileMessage.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+      fileChooser.setCurrentDirectory(new java.io.File("../../"));
       fileChooser.setDialogTitle("Pilih Pesan");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -89,30 +91,43 @@ public class EmbeddingForm {
     buttonProcess.addActionListener(e -> {
       SteganographyController steganographyController = new SteganographyController();
       GenerateId generateId = new GenerateId();
-      String stego = Path.TEMP_STEGO_IMAGE.getPath() + "stego-" + coverImagePath.substring(coverImagePath.lastIndexOf("\\") + 1, coverImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".png";
       String key = fieldKey.getText();
-
+      long startTime = System.currentTimeMillis();
       try {
+        String stego = Path.TEMP_STEGO_IMAGE.getPath() + "stego-" + coverImagePath.substring(coverImagePath.lastIndexOf("\\") + 1, coverImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".png";
         if (Files.size(new File(messagePath).toPath()) > 0) {
-          steganographyController.embedding(messagePath, coverImagePath, stego, key);
-          tempStegoImagePath = stego;
-          panelStegoImage.removeAll();
-          panelStegoImage.add(new JLabel(new ImageIcon(new ImageIcon(stego).getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH))));
-          panelStegoImage.revalidate();
-          panelStegoImage.repaint();
-          JOptionPane.showMessageDialog(null, "Pesan berhasil disisipkan");
-        } else {
-          JOptionPane.showMessageDialog(null, "Pesan tidak boleh kosong");
+          boolean isEmbedding = steganographyController.embedding(messagePath, coverImagePath, stego, key);
+          if (isEmbedding) {
+            long endTime = System.currentTimeMillis();
+            double duration = (endTime - startTime) / 1000.0;
+            tempStegoImagePath = stego;
+            panelStegoImage.removeAll();
+            panelStegoImage.add(new JLabel(new ImageIcon(new ImageIcon(stego).getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH))));
+            panelStegoImage.revalidate();
+            panelStegoImage.repaint();
+            labelTime.setText("Waktu Embedding: " + duration + " detik");
+            JOptionPane.showMessageDialog(null, "Embedding berhasil");
+          } else {
+            JOptionPane.showMessageDialog(null, "Embedding gagal dilakukan", "Gagal", JOptionPane.ERROR_MESSAGE);
+          }
         }
-      } catch (IOException ioException) {
-        ioException.printStackTrace();
+      } catch (Exception exception) {
+        if (coverImagePath == null) {
+          JOptionPane.showMessageDialog(null, "Gambar cover belum dipilih", "Gagal", JOptionPane.ERROR_MESSAGE);
+        } else if (messagePath == null) {
+          JOptionPane.showMessageDialog(null, "Pesan belum dipilih", "Gagal", JOptionPane.ERROR_MESSAGE);
+        } else if (key.isEmpty()) {
+          JOptionPane.showMessageDialog(null, "Kunci belum diisi", "Gagal", JOptionPane.ERROR_MESSAGE);
+        } else {
+          JOptionPane.showMessageDialog(null, "Embedding gagal dilakukan", "Gagal", JOptionPane.ERROR_MESSAGE);
+        }
       }
     });
 
     buttonSaveStegoImage.addActionListener(e -> {
       if (tempStegoImagePath != null) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+        fileChooser.setCurrentDirectory(new java.io.File("../../"));
         fileChooser.setDialogTitle("Save Message");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -121,6 +136,7 @@ public class EmbeddingForm {
           public boolean accept(File f) {
             return f.getName().toLowerCase().endsWith(".png") || f.isDirectory();
           }
+
           @Override
           public String getDescription() {
             return "PNG Images";
@@ -142,6 +158,21 @@ public class EmbeddingForm {
       } else {
         JOptionPane.showMessageDialog(null, "Gambar Stego belum di proses");
       }
+    });
+
+    buttonReset.addActionListener(e -> {
+      coverImagePath = null;
+      messagePath = null;
+      tempStegoImagePath = null;
+      panelCoverImage.removeAll();
+      panelCoverImage.revalidate();
+      panelCoverImage.repaint();
+      panelStegoImage.removeAll();
+      panelStegoImage.revalidate();
+      panelStegoImage.repaint();
+      fieldMessagePath.setText("");
+      fieldKey.setText("");
+      labelTime.setText("Waktu Embedding: -");
     });
   }
 
