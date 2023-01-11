@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class EmbeddingForm {
+  private String messagePath;
+  private String coverImagePath;
+  private String tempStegoImagePath;
+  private JLabel labelTime;
   private JPanel panelEmbedding;
   private JPanel panelCoverImage;
   private JPanel panelStegoImage;
@@ -21,13 +25,9 @@ public class EmbeddingForm {
   private JButton buttonSaveStegoImage;
   private JButton buttonChooseCoverImage;
   private JButton buttonChooseFileMessage;
+  private JButton buttonReset;
   private JTextField fieldKey;
   private JTextField fieldMessagePath;
-  private JLabel labelTime;
-  private JButton buttonReset;
-  private String messagePath;
-  private String coverImagePath;
-  private String tempStegoImagePath;
 
   public EmbeddingForm() {
     buttonBackHome.addActionListener(e -> {
