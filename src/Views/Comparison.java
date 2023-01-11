@@ -8,16 +8,16 @@ import java.io.File;
 import java.util.HashMap;
 
 public class Comparison {
-  String pathCover;
-  String pathStego;
+  private String pathCover;
+  private String pathStego;
   private JPanel comparisonMenu;
+  private JPanel panelCoverImage;
+  private JPanel panelStegoImage;
+  private JButton buttonProcess;
+  private JButton buttonBackHome;
   private JButton buttonChooseCover;
   private JButton buttonChooseStego;
   private JTextField fieldMSE;
-  private JButton buttonProcess;
-  private JButton buttonBackHome;
-  private JPanel panelCoverImage;
-  private JPanel panelStegoImage;
   private JTextField fieldPSNR;
 
   public Comparison() {

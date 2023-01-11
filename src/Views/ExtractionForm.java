@@ -13,18 +13,18 @@ import java.io.File;
 import java.nio.file.Files;
 
 public class ExtractionForm {
+  private String stegoImagePath;
+  private String tempMessagePath;
+  private JLabel labelTime;
   private JPanel panelExtraction;
   private JPanel panelStegoImage;
   private JButton buttonProcess;
   private JButton buttonChooseImage;
   private JButton buttonBackHome;
   private JButton buttonSaveMessage;
-  private JTextField fieldKey;
-  private JTextArea areaResultMessage;
   private JButton buttonReset;
-  private JLabel labelTime;
-  private String stegoImagePath;
-  private String tempMessagePath;
+  private JTextArea areaResultMessage;
+  private JTextField fieldKey;
 
   public ExtractionForm() {
     buttonBackHome.addActionListener(e -> {
@@ -69,14 +69,18 @@ public class ExtractionForm {
       long startTime = System.currentTimeMillis();
       try {
         String messagePath = Path.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".txt";
-        steganographyController.extracting(stegoImagePath, messagePath, key);
-        long endTime = System.currentTimeMillis();
-        double duration = (endTime - startTime) / 1000.0;
-        tempMessagePath = messagePath;
-        String message = fileManagement.getFileMessage(messagePath);
-        areaResultMessage.setText(message);
-        labelTime.setText("Waktu Embedding: " + duration + " detik");
-        JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak");
+        boolean isExtracted = steganographyController.extracting(stegoImagePath, messagePath, key);
+        if (isExtracted) {
+          long endTime = System.currentTimeMillis();
+          double duration = (endTime - startTime) / 1000.0;
+          tempMessagePath = messagePath;
+          String message = fileManagement.getFileMessage(messagePath);
+          areaResultMessage.setText(message);
+          labelTime.setText("Waktu Embedding: " + duration + " detik");
+          JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak");
+        } else {
+          JOptionPane.showMessageDialog(null, "Pesan gagal diekstrak");
+        }
       } catch (Exception exception) {
         if (stegoImagePath == null) {
           JOptionPane.showMessageDialog(null, "Pilih gambar stego terlebih dahulu", "Gagal", JOptionPane.ERROR_MESSAGE);

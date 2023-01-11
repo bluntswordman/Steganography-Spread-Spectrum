@@ -82,7 +82,7 @@ public class SteganographyController {
     }
   }
 
-  public void extracting(String stegoPath, String plainTextPath, String key) {
+  public boolean extracting(String stegoPath, String plainTextPath, String key) {
     BufferedImage image = fileManagement.getFileImage(stegoPath);
     int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
     int[] bits = new int[pixels.length * 3];
@@ -120,8 +120,10 @@ public class SteganographyController {
       BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
       bufferedWriter.write(message);
       bufferedWriter.close();
+      return true;
     } catch (IOException e) {
       e.printStackTrace();
+      return false;
     }
   }
 }
