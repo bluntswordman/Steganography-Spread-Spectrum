@@ -1,9 +1,9 @@
 package Views;
 
-import Controllers.SteganographyController;
-import Helpers.GenerateId;
-import Helpers.Path;
-import Utils.FileManagement;
+import Controllers.ExtractingController;
+import Enums.EnumPath;
+import lib.FileHandler;
+import lib.PrivateId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,32 +62,29 @@ public class ExtractionForm {
     });
 
     buttonProcess.addActionListener(e -> {
-      SteganographyController steganographyController = new SteganographyController();
-      FileManagement fileManagement = new FileManagement();
-      GenerateId generateId = new GenerateId();
       String key = fieldKey.getText();
       long startTime = System.currentTimeMillis();
       try {
-        String messagePath = Path.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + "-" + generateId.generateId() + ".txt";
-        boolean isExtracted = steganographyController.extracting(stegoImagePath, messagePath, key);
+        String messagePath = EnumPath.TEMP_MESSAGE.getPath() + "message-in-" + stegoImagePath.substring(stegoImagePath.lastIndexOf("\\") + 1, stegoImagePath.lastIndexOf(".")) + new PrivateId().generate() + ".txt";
+        boolean isExtracted = new ExtractingController(stegoImagePath, messagePath, key).extractMessage();
         if (isExtracted) {
           long endTime = System.currentTimeMillis();
           double duration = (endTime - startTime) / 1000.0;
           tempMessagePath = messagePath;
-          String message = fileManagement.getFileMessage(messagePath);
+          String message = new FileHandler().getMessage(messagePath);
           areaResultMessage.setText(message);
           labelTime.setText("Waktu Embedding: " + duration + " detik");
-          JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak");
+          JOptionPane.showMessageDialog(null, "Pesan berhasil diekstrak", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
-          JOptionPane.showMessageDialog(null, "Pesan gagal diekstrak");
+          JOptionPane.showMessageDialog(null, "Pesan gagal diekstrak", "Error", JOptionPane.ERROR_MESSAGE);
         }
       } catch (Exception exception) {
         if (stegoImagePath == null) {
-          JOptionPane.showMessageDialog(null, "Pilih gambar stego terlebih dahulu", "Gagal", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Pilih gambar stego terlebih dahulu", "Error", JOptionPane.ERROR_MESSAGE);
         } else if (key.isEmpty()) {
-          JOptionPane.showMessageDialog(null, "Masukkan kunci terlebih dahulu", "Gagal", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Masukkan kunci terlebih dahulu", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-          JOptionPane.showMessageDialog(null, "Extracting gagal dilakukan", "Gagal", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Extracting gagal dilakukan", "Error", JOptionPane.ERROR_MESSAGE);
         }
       }
     });
@@ -118,13 +115,13 @@ public class ExtractionForm {
           }
           try {
             Files.copy(new File(tempMessagePath).toPath(), new File(messagePath).toPath());
-            JOptionPane.showMessageDialog(null, "Pesan berhasil disimpan");
+            JOptionPane.showMessageDialog(null, "Pesan berhasil disimpan", "Success", JOptionPane.INFORMATION_MESSAGE);
           } catch (Exception exception) {
             JOptionPane.showMessageDialog(null, exception.getMessage());
           }
         }
       } else {
-        JOptionPane.showMessageDialog(null, "Pesan belum diekstrak");
+        JOptionPane.showMessageDialog(null, "Pesan belum diekstrak", "Error", JOptionPane.ERROR_MESSAGE);
       }
     });
 
@@ -151,8 +148,8 @@ public class ExtractionForm {
       @Override
       public void windowClosing(WindowEvent e) {
         super.windowClosing(e);
-        File folderImage = new File(Path.TEMP_STEGO_IMAGE.getPath());
-        File folderMessage = new File(Path.TEMP_MESSAGE.getPath());
+        File folderImage = new File(EnumPath.TEMP_STEGO_IMAGE.getPath());
+        File folderMessage = new File(EnumPath.TEMP_MESSAGE.getPath());
         File[] filesImage = folderImage.listFiles();
         File[] filesMessage = folderMessage.listFiles();
         assert filesImage != null;
