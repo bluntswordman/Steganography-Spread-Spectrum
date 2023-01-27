@@ -1,12 +1,10 @@
-package Utils;
+package lib;
 
-public class PseudoRandomNumberGenerator {
-  final MessageManipulation messageManipulation = new MessageManipulation();
-
+public class RandomGenerator {
+  DataConversion stringConversion = new DataConversion();
   private static int getSeed(StringBuilder binary) {
     String[] binaryArrays = new String[binary.length() / 8];
     for (int i = 0; i < binaryArrays.length; i++) binaryArrays[i] = binary.substring(i * 8, (i + 1) * 8);
-
     StringBuilder xorBinary = new StringBuilder();
     for (int i = 0; i < binaryArrays[0].length(); i++) {
       int xor = 0;
@@ -15,10 +13,8 @@ public class PseudoRandomNumberGenerator {
       }
       xorBinary.append(xor);
     }
-
     return Integer.parseInt(xorBinary.toString(), 2);
   }
-
   private static int[] getBlumBlumShub(int seed, int length) {
     int PRIME_NUMBER_P = 11;
     int PRIME_NUMBER_Q = 23;
@@ -28,22 +24,12 @@ public class PseudoRandomNumberGenerator {
       seed = (seed * seed) % n;
       blumBlumShub[i] = seed;
     }
-
     return blumBlumShub;
   }
-
-  private static StringBuilder convertIntegerToBinary(int[] decimals) {
-    StringBuilder binary = new StringBuilder();
-    for (int decimal : decimals) binary.append(String.format("%8s", Integer.toBinaryString(decimal)).replace(' ', '0'));
-
-    return binary;
-  }
-
   public StringBuilder generate(String key, int length) {
-    StringBuilder binary = messageManipulation.convertStringToBinary(key);
+    StringBuilder binary = stringConversion.stringToBinary(key);
     int seed = getSeed(binary);
     int[] pnrg = getBlumBlumShub(seed, length);
-
-    return convertIntegerToBinary(pnrg);
+    return stringConversion.integerToBinary(pnrg);
   }
 }

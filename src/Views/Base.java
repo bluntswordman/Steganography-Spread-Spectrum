@@ -1,6 +1,6 @@
 package Views;
 
-import Helpers.Path;
+import Enums.EnumPath;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,8 +52,8 @@ public class Base {
       @Override
       public void windowClosing(WindowEvent e) {
         super.windowClosing(e);
-        File folderImage = new File(Path.TEMP_STEGO_IMAGE.getPath());
-        File folderMessage = new File(Path.TEMP_MESSAGE.getPath());
+        File folderImage = new File(EnumPath.TEMP_STEGO_IMAGE.getPath());
+        File folderMessage = new File(EnumPath.TEMP_MESSAGE.getPath());
         File[] filesImage = folderImage.listFiles();
         File[] filesMessage = folderMessage.listFiles();
         assert filesImage != null;

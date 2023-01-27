@@ -1,6 +1,6 @@
 package Views;
 
-import Controllers.ImageQualityController;
+import Controllers.CompareController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +26,7 @@ public class Comparison {
 
     buttonChooseCover.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+      fileChooser.setCurrentDirectory(new java.io.File("../../"));
       fileChooser.setDialogTitle("Choose Cover Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -53,7 +53,7 @@ public class Comparison {
 
     buttonChooseStego.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new java.io.File("../../../"));
+      fileChooser.setCurrentDirectory(new java.io.File("../../"));
       fileChooser.setDialogTitle("Choose Stego Image");
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setAcceptAllFileFilterUsed(false);
@@ -79,13 +79,13 @@ public class Comparison {
     });
 
     buttonProcess.addActionListener(e -> {
-      ImageQualityController imageQualityController = new ImageQualityController();
+      CompareController compareController = new CompareController();
       try {
-        HashMap<String, Double> result = imageQualityController.generate(pathCover, pathStego);
+        HashMap<String, Double> result = compareController.generate(pathCover, pathStego);
         fieldMSE.setText(String.valueOf(result.get("MSE")));
         fieldPSNR.setText(result.get("PSNR") + " dB");
       } catch (Exception exception) {
-        exception.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Silahkan pilih gambar cover dan stego terlebih dahulu", "Error", JOptionPane.ERROR_MESSAGE);
       }
     });
 
