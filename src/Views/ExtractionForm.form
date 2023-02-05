@@ -322,7 +322,7 @@
           <background color="-1"/>
           <font name="Inter" size="12" style="1"/>
           <foreground color="-1"/>
-          <text value="Waktu Embedding: -"/>
+          <text value="Waktu Extracting: -"/>
         </properties>
       </component>
     </children>
